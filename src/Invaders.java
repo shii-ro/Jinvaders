@@ -4,11 +4,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import static java.lang.Thread.*;
 
 
 public class Invaders {
-    public static void main(String[] args) {
-        Path path = Paths.get("invaders.bin");
+    private static final int CYCLES_PER_FRAME = 33333;
+    private static final int CYCLES_PER_MIDFRAME = 16667;
+    public static void main(String[] args) throws InterruptedException {
+        Path path = Paths.get("./invaders.bin");
         byte[] rom;
 
         try {
@@ -19,13 +22,28 @@ public class Invaders {
 
         Mmu mmu = new Mmu();
         Cpu cpu = new Cpu();
-
+        Display display = new Display(mmu.memory, 2);
 
         mmu.loadRom(rom);
         cpu.init(mmu);
+        display.init();
+        display.repaint();
 
-        for(int i = 0; i < 20; i++){
-            cpu.cycle();
+        while(!cpu.error){
+            int total_cycles = 0;
+            while(total_cycles < CYCLES_PER_MIDFRAME && !cpu.error) {
+                cpu.cycle();
+                total_cycles += cpu.cycles;
+            }
+            // mid frame interrupt
+            cpu.midFrameInterruptHandler();
+            while(total_cycles < CYCLES_PER_MIDFRAME && !cpu.error) {
+                cpu.cycle();
+                total_cycles += cpu.cycles;
+            }
+            cpu.vblankInterruptHandler();
+            sleep(10);
+            display.repaint();
         }
 
     }

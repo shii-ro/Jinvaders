@@ -1,6 +1,6 @@
 
 public class Mmu {
-    byte[] memory = new byte[0x4000];
+    public byte[] memory = new byte[0x8000];
 //
     public Mmu(){
     }
@@ -15,10 +15,16 @@ public class Mmu {
         }
     }
     public void write8(int addr, int value){
-        memory[addr] = (byte)value;
+        if(addr < 0x1FFF) return;
+        memory[addr & 0x3FFF] = (byte)value;
+    }
+
+    public void write16(int addr, int value){
+        write8(addr + 1, (value >> 8) & 0xFF);
+        write8(addr, value & 0xFF);
     }
     public int read8(int addr){
-        return memory[addr] & 0xFF;
+        return memory[addr & 0x3FFF] & 0xFF;
     }
 
     public int read16(int addr){
