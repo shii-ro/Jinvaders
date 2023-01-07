@@ -4,7 +4,7 @@ public class Cpu {
     private int shift1;
     private int shiftAmount;
 
-    private Disassembler dasm;
+//     private Disassembler dasm;
     private boolean[] parityFlagLUT;
     private static final int opcodesCyclesLUT[] = {
             4, 10, 7, 5, 5, 5, 7, 4, 4, 10, 7, 5, 5, 5, 7, 4,  // 0
