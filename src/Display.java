@@ -1,27 +1,34 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class Display extends JPanel {
     private byte gfx[];
     private int displayScale;
+    private KeyListener listener;
     private Graphics g;
     private static final int DISPLAY_WIDTH = 256;
     private static final int DISPLAY_HEIGTH = 224;
     private JFrame frame;
+    private Keyboard key;
 
-    public Display(byte[] gfx, int scale){
+    public Display(byte[] gfx, int scale, Keyboard key){
         this.displayScale = scale;
         this.gfx = gfx;
     }
-    public void init(){
+    public void init(Keyboard key){
         this.setPreferredSize(new Dimension(DISPLAY_HEIGTH * displayScale, DISPLAY_WIDTH * displayScale));
         JFrame window = new JFrame("Jinvaders");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.add(this);
         window.pack();
-        window.setVisible(true);
         window.setBackground(Color.WHITE);
-        this.setFocusable(true);
+        this.key = key;
+        this.listener = key.Listener;
+        addKeyListener(listener);
+        window.setVisible(true);
+        setFocusable(true);
     }
     @Override
     public void paint(Graphics g) {

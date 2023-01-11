@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.awt.event.KeyEvent;
 import static java.lang.Thread.*;
 
 
@@ -22,11 +22,13 @@ public class Invaders {
 
         Mmu mmu = new Mmu();
         Cpu cpu = new Cpu();
-        Display display = new Display(mmu.memory, 2);
+        Keyboard key = new Keyboard();
+        Display display = new Display(mmu.memory, 2, key);
 
         mmu.loadRom(rom);
-        cpu.init(mmu);
-        display.init();
+        cpu.init(mmu, key);
+        key.init(cpu);
+        display.init(key);
         display.repaint();
 
         while(!cpu.error){

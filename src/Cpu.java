@@ -4,7 +4,6 @@ public class Cpu {
     private int shift1;
     private int shiftAmount;
 
-    private Disassembler dasm;
     private boolean[] parityFlagLUT;
     private static final int opcodesCyclesLUT[] = {
             4, 10, 7, 5, 5, 5, 7, 4, 4, 10, 7, 5, 5, 5, 7, 4,  // 0
@@ -24,7 +23,9 @@ public class Cpu {
             5, 10, 10, 18, 11, 11, 7, 11, 5, 5, 10, 4, 11, 17, 7, 11, // E
             5, 10, 10, 4, 11, 11, 7, 11, 5, 5, 10, 4, 11, 17, 7, 11  // F
     };
+
     private Mmu mmu;
+    private Keyboard key;
     private int PC;
     private int OC;
     private int SP;
@@ -37,19 +38,17 @@ public class Cpu {
     private boolean carryFlag;
     private boolean interruptEnable;
     public Cpu() {
-        this.dasm = new Disassembler();
         this.parityFlagLUT = new boolean[0x100];
         this.OC = 0;
         this.PC = 0;
         this.zeroFlag = false;
     }
 
-    public void init(Mmu mmu) {
+    public void init(Mmu mmu, Keyboard key) {
+        this.key = key;
         this.mmu = mmu;
-        this.dasm.init(mmu, this);
         this.fillParityFlagLUT();
         this.shiftAmount = 0;
-
     }
 
     public void midFrameInterruptHandler(){
@@ -135,17 +134,21 @@ public class Cpu {
         switch(value){
             case 0x02: shiftAmount = A() & 0x7; break;
             case 0x04: shift0 = shift1; shift1 = A(); break;
-            default: System.out.printf("Not implemented OUT: %02X\n", value);
+//            default: System.out.printf("Not implemented OUT: %02X\n", value);
         }
     }
 
     private void IN(int value){
         switch (value){
-            case 0x03:
+            case 0x00:
+                A(0b00001110); break;
+            case 0x01: // INput 1
+                A(key.getP1Keyboard()); break;
+            case 0x03: // Shift Register
                 int v = ((shift1<<8) | shift0);
                 int shifted = (v << shiftAmount) & 0xFFFF;
                 A((shifted >> 8) & 0xFF); break;
-            default: System.out.printf("Not implemented IN: %02X\n", value);
+//            default: System.out.printf("Not implemented IN: %02X\n", value);
         }
     }
 
