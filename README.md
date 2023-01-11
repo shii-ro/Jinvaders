@@ -2,9 +2,11 @@
 TAITO Space Invaders (1978) emulator in Java
 
 ## Preview
-![Jinvaders_2023-01-07_09-25-04_-_Trim_AdobeExpress](https://user-images.githubusercontent.com/45200489/211151035-fb076a5e-db6c-4c0a-98be-ea61b15e117f.gif)
 
-## How to play
+
+## How to pla![Captura de Tela (17)](https://user-images.githubusercontent.com/45200489/211884418-6f80afce-1e99-4016-ad0d-e551dc934c58.png)
+![Captura de Tela (18)](https://user-images.githubusercontent.com/45200489/211884450-587e3a0d-e3d2-4cdc-8081-c10bd802593b.png)
+
 
 | Computer | Space Invaders                                 |
 |----------|------------------------------------------------|
