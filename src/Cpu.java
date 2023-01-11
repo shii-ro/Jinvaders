@@ -81,11 +81,9 @@ public class Cpu {
         this.PC += 2;
         return value;
     }
-
     private int pop8(){
         return mmu.read8(this.SP++);
     }
-
     private int pop16(){
         return pop8() | pop8() << 8;
     }
@@ -504,12 +502,7 @@ public class Cpu {
             case 0x7D: A(L()); break;
             case 0x7E: A(M(HL())); break;
             case 0x7F: A(A()); break;
-
-
-
             case 0xEB: int tmp = HL(); HL(DE()); DE(tmp); break; // XCHG
-
-
             default: error  = true; System.out.printf("Opcode not implemented: 0x%02X\n", (byte)this.OC); break;
         }
         cycles = opcodesCyclesLUT[OC];
