@@ -122,7 +122,7 @@ public class Cpu {
         carryFlag = (value > A());
     }
 
-    void DAD(int value){
+    private void DAD(int value){
         int tmp = HL() + value;
         HL(tmp & 0xFFFF);
         carryFlag = (tmp > 0xFFFF) ? true : false;
@@ -182,7 +182,7 @@ public class Cpu {
     }
 
 
-    void AN8(int value){
+    private void AN8(int value){
         int temp = A & value;
         signFlag = ((temp & 0x80) == 0x80) ? true : false;
         zeroFlag = ((temp & 0xFF) == 0x00) ? true : false;
@@ -191,7 +191,7 @@ public class Cpu {
         A = temp & 0xFF;
     }
 
-    void OR8(int value){
+    private void OR8(int value){
         int temp = A | value;
         signFlag = ((temp & 0x80) == 0x80) ? true : false;
         zeroFlag = ((temp & 0xFF) == 0x00) ? true : false;
@@ -200,7 +200,7 @@ public class Cpu {
         A = temp & 0xFF;
     }
 
-    void XR8(int value){
+    private void XR8(int value){
         int temp = A ^ value;
         signFlag = ((temp & 0x80) == 0x80) ? true : false;
         zeroFlag = ((temp & 0xFF) == 0x00) ? true : false;
@@ -209,7 +209,7 @@ public class Cpu {
         A = temp & 0xFF;
     }
 
-    void AD8(int value){
+    private void AD8(int value){
         int temp = A + value;
         signFlag = ((temp & 0x80) == 0x80);
         zeroFlag = ((temp & 0xFF) == 0x00);
@@ -219,7 +219,7 @@ public class Cpu {
         A = temp & 0xFF;
     }
 
-    void SU8(int value){
+    private void SU8(int value){
         int temp = A - value;
         signFlag = ((temp & 0x80) == 0x80);
         zeroFlag = ((temp & 0xFF) == 0x00);
@@ -229,7 +229,7 @@ public class Cpu {
         A = temp & 0xFF;
     }
 
-    void cycle(){
+    public void cycle(){
         this.OC = mmu.read8(this.PC++);
 //        System.out.printf("%04X: %02X %s  A: %02X F: %02x SP: %04X\n", this.PC++, this.OC, dasm.getMnemonic(OC), this.A(), this.F(), this.SP());
 
